@@ -1,0 +1,56 @@
+{
+  name: 'White Summer Tee',
+  gender: "men",
+  cost: 20,
+  season: 'summer',
+  type: 'tee-shirt',
+  sizes: ['s','m','l', 'xl'],
+  tags: ['summer', '100% cotton', 'white', 'organic', 'light'],
+  imageUrls: [],
+  quantity:80,
+  addedOn: new Date()
+
+}
+
+
+{
+  name: 'Maker & Meeks Solo',
+  gender: "men",
+  cost: 25,
+  season: 'summer',
+  type: 'tee-shirt',
+  sizes: ['s','m','l', 'xl'],
+  tags: ['summer', 'hemmed', 'white', 'organic', 'white', 'black'],
+  imageUrls: [],
+  quantity:90,
+  addedOn: new Date()
+
+}
+
+{
+  name: 'Maker & Meeks Hoodlum',
+  gender: "men",
+  cost: 35,
+  season: 'winter',
+  type: 'sweatshirt',
+  sizes: ['s','m','l', 'xl'],
+  tags: ['fall', 'hemmed', 'white', 'organic', 'white', 'black', ' 100% cotton'],
+  imageUrls: [],
+  quantity:90,
+  addedOn: new Date()
+
+}
+
+{
+  name: 'Maker & Meeks Jogger',
+  gender: "men",
+  cost: 40,
+  season: 'winter',
+  type: 'pants',
+  sizes: ['s','m','l', 'xl'],
+  tags: ['fall', 'hemmed', 'white', 'organic', 'white', 'black', ' 100% cotton'],
+  imageUrls: [],
+  quantity:30,
+  addedOn: new Date()
+
+}

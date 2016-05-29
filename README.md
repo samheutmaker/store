@@ -1,2 +1,3 @@
-# store
-A Store
+# maker-meeks-new
+
+A Stripe integrated MEAN stack ecommerce platform.

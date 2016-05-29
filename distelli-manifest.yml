@@ -1,0 +1,30 @@
+samheutmaker/maker-meeks-new:
+
+  PkgInclude:
+    - '*'
+
+  PkgExclude:
+    - node_modules/
+
+  PreInstall:
+    - echo "Starting PreInstall"
+    - sudo apt-get update
+    - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+    - sudo apt-get install -y nodejs
+    - sudo apt-get install -y build-essential
+    - sudo apt-get install nginx -y
+    - sudo rm -rf /etc/nginx/sites-enabled/default
+
+
+  PostInstall:
+    - rm -rf node_modules
+    - echo "Starting PostInstall"
+    - npm install
+
+
+  Exec:
+    - sudo rm -rf /etc/nginx/sites-available/node
+    - sudo mv node /etc/nginx/sites-available/node
+    - sudo ln -sf /etc/nginx/sites-available/node /etc/nginx/sites-enabled/node
+    - sudo service nginx restart -y
+    - /usr/bin/nodejs server.js
