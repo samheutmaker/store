@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const shippingSchema = require(__dirname + '/shipping.js').schema;
+const Cart = require(__dirname + '/cart.js');
+const a = require(__dirname + "/../lib/analytics");
 
 
 // User Model
@@ -16,20 +18,26 @@ var userSchema = mongoose.Schema({
   social: String,
   orders: Array,
   shipping: [shippingSchema],
-  cart: Array,
-  analytics: {
-    joinedOn: Date,
-    numberOfOrders: Number,
-    numberOfProducts: Number,
-    totalAmountSpent: Number,
-    loggedIn: Number,
-    lastLogin: Date
-  },
   authentication: {
     email: String,
     password: String
   }
 });
+
+// Initialize User
+userSchema.methods.initialize = function() {
+  return new Promise((resolve, reject) => {
+
+    var newCart = new Cart();
+    console.log(this._id);
+    newCart.owner_id = this._id;
+    newCart.save((err, data) => {
+      console.log(err);
+      console.log(data);
+      (err) ? reject(err) : resolve(data);
+    })
+  });
+};
 
 
 // Hash user password

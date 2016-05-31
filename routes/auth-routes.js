@@ -12,7 +12,7 @@ var authRouter = module.exports = exports = express.Router();
 authRouter.post('/register', jsonParser, (req, res) => {
   // Check email and password length
   if (!((req.body.email || "").length && (req.body.password || "").length >
-      7)) {
+    7)) {
     return res.status(400).json({
       msg: 'Email or password not long enough'
     })
@@ -39,15 +39,19 @@ authRouter.post('/register', jsonParser, (req, res) => {
     newUser.authentication.email = req.body.email;
     newUser.hashPassword(req.body.password);
     newUser.save((err, data) => {
-      if (err || !data) {
-        return res.status(500).json({
-          msg: 'Error creating user'
-        });
-      }
-      res.status(200).json({
-        token: data.generateToken(),
-        user: data
-      })
+      newUser.initialize().then(() => {
+        if (err || !data) {
+          return res.status(500).json({
+            msg: 'Error creating user'
+          });
+        }
+        res.status(200).json({
+          token: data.generateToken(),
+          user: data
+        })
+      }, (err) => {
+        console.log(err);
+      });
     });
   });
 });

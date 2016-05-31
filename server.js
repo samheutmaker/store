@@ -16,10 +16,10 @@ mongoose.connect(MONGO_URI);
 
 var authRoutes = require(__dirname + '/routes/auth-routes');
 var shippingRoutes = require(__dirname + '/routes/shipping-routes');
-// var productRoutes = require(__dirname + '/routes/product-routes');
-// var userRoutes = require(__dirname + '/routes/user-routes');
+var cartRoutes = require(__dirname + '/routes/cart-routes');
 
 app.use('/auth', authRoutes);
+app.use('/user/cart', cartRoutes);
 app.use('/user/shipping', shippingRoutes);
 
 app.listen(PORT, () => {
