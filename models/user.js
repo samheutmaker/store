@@ -24,21 +24,19 @@ var userSchema = mongoose.Schema({
   }
 });
 
+
 // Initialize User
 userSchema.methods.initialize = function() {
   return new Promise((resolve, reject) => {
 
     var newCart = new Cart();
-    console.log(this._id);
     newCart.owner_id = this._id;
+
     newCart.save((err, data) => {
-      console.log(err);
-      console.log(data);
       (err) ? reject(err) : resolve(data);
-    })
+    });
   });
 };
-
 
 // Hash user password
 userSchema.methods.hashPassword = function(password) {
@@ -54,6 +52,7 @@ userSchema.methods.generateToken = function() {
     id: this._id
   }, process.env.TOKEN_SECRET || 'CHANGE_ME');
 };
+
 
 // Export user model
 module.exports = exports = mongoose.model('User', userSchema);

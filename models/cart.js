@@ -71,9 +71,14 @@ cartSchema.methods.addItem = function(paramsObj) {
 cartSchema.methods.removeItem = function(paramsObj) {
 	function removeFromCart() {
 		return new Promise((resolve, reject) => {
-			var index = this.items.indexOf(paramsOb.itemId);
+			var itemToRemove = this.items.filter((item, itemIndex) => {
+				return (item.item_id == paramsObj.itemId && item.size == paramsObj.size);
+			});
+
+			var index = this.items.indexOf(itemToRemove[0]);
+
 			if (index > -1) {
-				this.items.splice(index, index + 1);
+				this.items.splice(index, 1);
 				this.save((err, data) => {
 					(err) ? reject(err) : resolve(data);
 				});
@@ -113,7 +118,6 @@ cartSchema.methods.populate = function() {
 						newEl.item = hash[newEl.item_id];
 						return newEl
 					});
-
 
 					(err) ? reject(err) : resolve(finalCart);
 				})

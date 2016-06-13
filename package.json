@@ -22,11 +22,12 @@
   "homepage": "https://github.com/samheutmaker/notify#readme",
   "dependencies": {
     "analytics-node": "^2.1.0",
-    "bcrypt": "^0.8.5",
-    "body-parser": "^1.14.2",
+    "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.1",
     "express": "^4.13.4",
+    "flat": "^2.0.0",
     "jsonwebtoken": "^5.5.4",
-    "mongoose": "^4.3.7",
+    "mongoose": "^4.4.20",
     "node-geocoder": "^3.6.2",
     "staff": "^1.0.2"
   },
