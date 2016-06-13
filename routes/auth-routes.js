@@ -3,6 +3,7 @@ const jsonParser = require('body-parser').json();
 const mongoose = require('mongoose');
 const basicHTTP = require(__dirname + '/../lib/basic-http');
 const authCheck = require(__dirname + '/../lib/check-token');
+const a = require(__dirname + "/../lib/analytics");
 
 const User = require(__dirname + '/../models/user');
 
@@ -38,6 +39,12 @@ authRouter.post('/register', jsonParser, (req, res) => {
     var newUser = new User();
     newUser.authentication.email = req.body.email;
     newUser.hashPassword(req.body.password);
+    newUser.name = req.body.name;
+    newUser.gender = req.body.gender;
+    newUser.DOB = req.body.DOB;
+    newUser.createdAt = new Date();
+
+
     newUser.save((err, data) => {
       newUser.initialize().then(() => {
         if (err || !data) {
@@ -45,6 +52,7 @@ authRouter.post('/register', jsonParser, (req, res) => {
             msg: 'Error creating user'
           });
         }
+
         res.status(200).json({
           token: data.generateToken(),
           user: data
@@ -80,6 +88,12 @@ authRouter.get('/login', basicHTTP, (req, res) => {
         msg: 'Invalid username or password'
       })
     }
+
+    a.track({
+      userId: req.user._id.toString(),
+      event: 'USER_SIGNED_IN'
+    });
+
     // Authenticate User, respond with token and user data
     res.status(200).json({
       user: user,

@@ -35,7 +35,7 @@
        function success(data) {
          a.track({
            userId: req.user._id.toString(),
-           event: 'added shipping address',
+           event: 'ADDED_SHIPPING_ADDRESS',
            properties: {}
          });
          return res.status(200).json(data);
@@ -118,7 +118,7 @@
        function success(data) {
          a.track({
            userId: req.user._id.toString(),
-           event: 'removed shipping address',
+           event: 'REMOVED_SHIPPING_ADDRESS',
            properties: {}
          });
          return res.status(200).json(data);

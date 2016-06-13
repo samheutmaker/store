@@ -21,14 +21,27 @@
  });
 
  userRouter.put('/update', authCheck, jsonParser, (req, res) => {
-	try {
+ 	try {
  		if (req.user) {
- 			if((req.body.authentication && req.body.authentication.password) || req.body['authentication.email']) {
+ 			if ((req.body.authentication && req.body.authentication.password) || req.body['authentication.email']) {
  				return error.requiredPropError(res, 'Cannot change password');
  			}
- 			User.update({_id: req.user._id}, flat(req.body),
- 			 (err, data) => {
- 				return (err) ? error.dbError(res, err, 'Error updating user info') : res.status(200).json(data);
+ 			User.update({
+ 				_id: req.user._id
+ 			}, flat(req.body), (err, data) => {
+ 				return (err) ? error.dbError(res, err, 'Error updating user info') : success();
+
+ 				function success() {
+ 					a.track({
+ 						userId: req.user._id.toString(),
+ 						event: 'UPDATED_USER_INFO',
+ 						properties: {
+ 							changedItems: Object.keys(req.body)
+ 						}
+ 					});
+ 					return res.status(200).json(data)
+ 				}
+
  			});
 
  		} else {

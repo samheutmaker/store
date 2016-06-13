@@ -12,12 +12,14 @@ var userSchema = mongoose.Schema({
     first: String,
     last: String
   },
-  birthday: Date,
+  DOB: Date,
   gender: String,
+  createdAt: Date,
   geoTag: String,
   social: String,
   orders: Array,
   shipping: [shippingSchema],
+  lastRequestTime: Date,
   authentication: {
     email: String,
     password: String
@@ -29,6 +31,14 @@ var userSchema = mongoose.Schema({
 userSchema.methods.initialize = function() {
   return new Promise((resolve, reject) => {
 
+
+    a.track({
+      userId: this._id.toString(),
+      event: 'USER_REGISTERED'
+    });
+
+    this.identify();
+
     var newCart = new Cart();
     newCart.owner_id = this._id;
 
@@ -37,6 +47,22 @@ userSchema.methods.initialize = function() {
     });
   });
 };
+
+
+// Identify with new Info
+userSchema.methods.identify = function() {
+  var copy = Object.assign({}, this._doc);
+
+  a.identify({
+    userId: this._id.toString(),
+    traits: {
+      name: copy.name,
+      DOB: copy.DOB,
+      gender: copy.gender,
+      email: copy.authentication.email
+    }
+  });
+}
 
 // Hash user password
 userSchema.methods.hashPassword = function(password) {

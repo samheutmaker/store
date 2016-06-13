@@ -32,7 +32,7 @@
             return errors.dbError(res, err, 'Error retrieving cart.', 2);
           });
          };
-         
+
          // Create New Error
          function error(err) {
            return errors.dbError(res, err, 'Error retrieving cart.', 2);
@@ -63,7 +63,7 @@
 
              a.track({
                userId: req.user._id.toString(),
-               event: 'added item to cart',
+               event: 'ADDED_ITEM_TO_CART',
                properties: {
                 itemId: req.body.itemId,
                 quantity: req.body.quantity || 1,
@@ -103,7 +103,7 @@
            }).then((newItem) => {
              a.track({
                userId: req.user._id.toString(),
-               event: 'removed item from cart',
+               event: 'REMOVED_ITEM_FROM_CART',
                properties: {
                 itemId: req.body.itemId,
                 quantity: req.body.quantity || 1,
