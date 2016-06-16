@@ -3,11 +3,18 @@ const mongoose = require('mongoose');
 const jsonParser = require('body-parser').json();
 const db = require(__dirname + '/lib/db')
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 const MONGO_URI = db.url;
 
 var app = express();
+
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
+  next();
+});
 
 app.use(express.static(__dirname + '/www'));
 

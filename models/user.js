@@ -31,7 +31,6 @@ var userSchema = mongoose.Schema({
 userSchema.methods.initialize = function() {
   return new Promise((resolve, reject) => {
 
-
     a.track({
       userId: this._id.toString(),
       event: 'USER_REGISTERED'

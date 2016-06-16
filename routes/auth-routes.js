@@ -90,7 +90,7 @@ authRouter.get('/login', basicHTTP, (req, res) => {
     }
 
     a.track({
-      userId: req.user._id.toString(),
+      userId: user._id.toString(),
       event: 'USER_SIGNED_IN'
     });
 
