@@ -92,6 +92,7 @@ cartSchema.methods.removeItem = function(paramsObj) {
 }
 
 cartSchema.methods.populate = function() {
+	
 	return new Promise((resolve, reject) => {
 		try {
 			if (this.items && this.items.length) {
@@ -112,7 +113,6 @@ cartSchema.methods.populate = function() {
 						hash[el._id] = el;
 					});
 
-
 					var finalCart = this.items.map((el, i) => {
 						var newEl = el;
 						newEl.item = hash[newEl.item_id];
@@ -120,9 +120,13 @@ cartSchema.methods.populate = function() {
 					});
 
 					(err) ? reject(err) : resolve(finalCart);
+
 				})
+			} else {
+				resolve([]);
 			}
 		} catch (e) {
+			console.log(e);
 			reject(e);
 		}
 	});
