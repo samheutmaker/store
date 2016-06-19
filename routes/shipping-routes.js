@@ -1,4 +1,5 @@
  const express = require('express');
+ const flat = require('flat');
  const jsonParser = require('body-parser').json();
  const authCheck = require(__dirname + '/../lib/check-token');
  const errors = require(__dirname + '/../lib/errors');
@@ -104,6 +105,40 @@
    } catch (e) {
      return errors.stdError(res, null, 1);
    }
+ });
+
+ // Update shipping document
+ shippingRouter.put('/address/update', authCheck, jsonParser, (req, res) => {
+  try {
+    if (req.user) {
+      var _id = req.body._id;
+      delete req.body._id;
+     
+      Shipping.update({
+        _id: _id,
+        owner_id: req.user._id
+      }, flat(req.body), (err, data) => {
+        return (err) ? error.dbError(res, err, 'Error updating address info') : success();
+
+        function success() {
+          a.track({
+            userId: req.user._id.toString(),
+            event: 'UPDATED_SHIPPING_ADDRESS',
+            properties: {
+              changedItems: Object.keys(req.body)
+            }
+          });
+          return res.status(200).json(data)
+        }
+
+      });
+
+    } else {
+      return error.requiredPropError(res, 'User Token');
+    }
+  } catch (e) {
+    return error.stdError(res, null, 1);
+  }
  });
 
  // Delete Shipping Document

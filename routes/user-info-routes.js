@@ -23,7 +23,7 @@
  userRouter.put('/update', authCheck, jsonParser, (req, res) => {
  	try {
  		if (req.user) {
- 			if ((req.body.authentication && req.body.authentication.password) || req.body['authentication.email']) {
+ 			if ((req.body.authentication && req.body.authentication.password) || req.body['authentication.password']) {
  				return error.requiredPropError(res, 'Cannot change password');
  			}
  			User.update({
