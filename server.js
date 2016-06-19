@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const jsonParser = require('body-parser').json();
+const bodyParser = require('body-parser')
 const db = require(__dirname + '/lib/db')
 
 const PORT = process.env.PORT || 8080;
@@ -15,6 +15,10 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization, token");
   next();
 });
+
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 
 app.use(express.static(__dirname + '/www'));
 

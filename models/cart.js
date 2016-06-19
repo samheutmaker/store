@@ -41,7 +41,7 @@ cartSchema.methods.addItem = function(paramsObj) {
 
 			if (updateItem[0]) {
 				this.items.forEach((el, i) => {
-					if (el.item_id == paramsObj.itemId) {
+					if (el.item_id == paramsObj.itemId && el.size == paramsObj.size) {
 						el.quantity += paramsObj.quantity;
 					}
 				})

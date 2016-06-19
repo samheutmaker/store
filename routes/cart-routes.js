@@ -50,6 +50,7 @@
  // Add Item to Cart -- Returns Entire Cart
  cartRouter.post('/add', authCheck, jsonParser, (req, res) => {
    try {
+    console.log(req.body);
      if (req.body && req.body.itemId && req.user) {
        Cart.findOne({
          owner_id: req.user._id
@@ -57,7 +58,7 @@
          if (!err && cart) {
            cart.addItem({
              itemId: req.body.itemId,
-             quantity: req.body.quantity || 1,
+             quantity: parseInt(req.body.quantity) || 1,
              size: req.body.size || 'M'
            }).then((newItem) => {
 
@@ -89,7 +90,7 @@
 
 
  // Remove item from Cart -- Returns Entire Cart
- cartRouter.delete('/remove', authCheck, jsonParser, (req, res) => {
+ cartRouter.post('/remove', authCheck, jsonParser, (req, res) => {
    try {
      if (req.body && req.body.itemId && req.user) {
        Cart.findOne({
@@ -98,7 +99,6 @@
          if (!err && cart) {
            cart.removeItem({
              itemId: req.body.itemId,
-             quantity: req.body.quantity || 1,
              size: req.body.size || 'L'
            }).then((newItem) => {
              a.track({

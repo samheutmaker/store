@@ -82,9 +82,10 @@
  // Get Shipping Document
  shippingRouter.get('/address/:id', authCheck, jsonParser, (req, res) => {
    try {
-     if (req.params && req.params.id) {
+     if (req.params && req.params.id && req.user) {
        Shipping.findOne({
-         _id: req.params.id
+         _id: req.params.id,
+         owner_id: req.user._id
        }, (err, data) => {
          return ((err || !data) ? error(err) : success(data));
        });
@@ -106,11 +107,12 @@
  });
 
  // Delete Shipping Document
- shippingRouter.delete('/address/:id', authCheck, jsonParser, (req, res) => {
+ shippingRouter.post('/address/remove/:id', authCheck, jsonParser, (req, res) => {
    try {
-     if (req.params && req.params.id) {
+     if (req.params && req.params.id && req.user) {
        Shipping.remove({
-         _id: req.params.id
+         _id: req.params.id,
+         owner_id: req.user._id
        }, (err, data) => {
          return ((err || !data) ? error(err) : success(data));
        });
