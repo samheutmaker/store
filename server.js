@@ -31,11 +31,13 @@ var userInfoRoutes = require(__dirname + '/routes/user-info-routes');
 var shippingRoutes = require(__dirname + '/routes/shipping-routes');
 var productRoutes = require(__dirname + '/routes/product-routes');
 var cartRoutes = require(__dirname + '/routes/cart-routes');
+var checkoutRoutes = require(__dirname + '/routes/checkout-routes');
 
 app.use('/auth', authRoutes);
 app.use('/user/info', userInfoRoutes);
 app.use('/user/cart', cartRoutes);
 app.use('/user/shipping', shippingRoutes);
+app.use('/stripe', checkoutRoutes);
 app.use('/products', productRoutes);
 
 app.listen(PORT, () => {

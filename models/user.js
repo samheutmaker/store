@@ -20,6 +20,7 @@ var userSchema = mongoose.Schema({
   orders: Array,
   shipping: [shippingSchema],
   lastRequestTime: Date,
+  stripe_id: String,
   authentication: {
     email: String,
     password: String

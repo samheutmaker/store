@@ -29,7 +29,8 @@
     "jsonwebtoken": "^5.5.4",
     "mongoose": "^4.4.20",
     "node-geocoder": "^3.6.2",
-    "staff": "^1.0.2"
+    "staff": "^1.0.2",
+    "stripe": "^4.7.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

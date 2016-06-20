@@ -1,4 +1,5 @@
 const express = require('express');
+const stripe = require('stripe')('sk_test_cMSm7uHKKH0u2sIckUugISga');
 const jsonParser = require('body-parser').json();
 const mongoose = require('mongoose');
 const basicHTTP = require(__dirname + '/../lib/basic-http');
@@ -11,6 +12,8 @@ var authRouter = module.exports = exports = express.Router();
 
 // Create new User
 authRouter.post('/register', jsonParser, (req, res) => {
+
+  console.log(req.body);
   // Check email and password length
   if (!((req.body.email || "").length && (req.body.password || "").length >
     7)) {
@@ -44,23 +47,36 @@ authRouter.post('/register', jsonParser, (req, res) => {
     newUser.DOB = req.body.DOB;
     newUser.createdAt = new Date();
 
+    var stripeToken = req.body.token;
 
-    newUser.save((err, data) => {
-      newUser.initialize().then(() => {
-        if (err || !data) {
-          return res.status(500).json({
-            msg: 'Error creating user'
+    stripe.customers.create({
+      description: 'Store Inc',
+      email: req.body.email,
+      source: stripeToken
+    })
+    .then((customer) => {
+        newUser.stripe_id = customer.id;
+        newUser.save((err, user) => {
+          newUser.initialize().then(() => {
+            if (err || !user) {
+              return res.status(500).json({
+                msg: 'Error creating user'
+              });
+            }
+
+            res.status(200).json({
+              token: user.generateToken(),
+              user: user
+            })
+          }, (err) => {
+            console.log(err);
           });
-        }
+        });
 
-        res.status(200).json({
-          token: data.generateToken(),
-          user: data
-        })
-      }, (err) => {
-        console.log(err);
-      });
-    });
+      })
+    .catch((e) => {
+      console.log(e);
+    } ) 
   });
 });
 
