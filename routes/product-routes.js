@@ -1,9 +1,13 @@
 const express = require('express');
 const jsonParser = require('body-parser').json();
-const mongoose = require('mongoose');
+
 const authCheck = require(__dirname + '/../lib/check-token');
+const error = require(__dirname + '/../lib/errors');
+const util = require(__dirname + '/../lib/utilities');
+const a = require(__dirname + '/../lib/analytics');
 
 const Product = require(__dirname + '/../models/product');
+
 
 var productRouter = module.exports = exports = express.Router();
 
@@ -28,7 +32,7 @@ productRouter.get('/:id', jsonParser, (req, res) => {
   Product.findOne({
     _id: req.params.id
   }, (err, data) => {
-  
+
 
     //send results back
     res.status(200).json({
@@ -36,16 +40,18 @@ productRouter.get('/:id', jsonParser, (req, res) => {
       data: data
     });
   });
+
+
 });
 
-// Add new Product --- NEEDS AUTH
 productRouter.post('/new', authCheck, jsonParser, (req, res) => {
-  if (req.user._id == '56b2e10dfdef78b4727f54e0') {
-    // Create new product
+  try {
     var newProduct = new Product();
-    // Save new product attributes
+
     newProduct.name = req.body.name;
+    newProduct.SKU = req.body.SKU;
     newProduct.gender = req.body.gender;
+    newProduct.desc = req.body.desc;
     newProduct.cost = req.body.cost;
     newProduct.season = req.body.season;
     newProduct.type = req.body.type;
@@ -53,22 +59,27 @@ productRouter.post('/new', authCheck, jsonParser, (req, res) => {
     newProduct.tags = req.body.tags;
     newProduct.imageUrls = req.body.imageUrls;
     newProduct.quantity = req.body.quantity;
+    newProduct.addedBy = req.user._id;
     newProduct.addedOn = new Date();
 
-    // Save new product into db
-    newProduct.save((err, data) => {
+    newProduct.save((err, savedProduct) => {
+      return (err || !savedProduct) ? error.dbError(res, err, 'Error creating new product') : success();
 
-      res.status(200).json({
-        msg: 'Successfully Added',
-        data: data
-      })
-    })
+      function success() {
+        savedProduct.initialize()
+          .then(() => {
+            res.status(200).json(savedProduct);
+          })
+          .catch((catchErr) => {
+            console.log(catchErr);
+            return error.stdError(res, null, 1);
+          });
+      }
 
-  } else {
-    res.status(404).json({
-      msg: 'Error'
     });
+  } catch (e) {
+    return error.stdError(res, null, 1);
   }
 
-});
 
+});

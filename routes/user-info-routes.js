@@ -1,11 +1,11 @@
  const express = require('express');
  const jsonParser = require('body-parser').json();
- const mongoose = require('mongoose');
  const flat = require('flat');
+
  const authCheck = require(__dirname + '/../lib/check-token');
  const error = require(__dirname + '/../lib/errors');
  const a = require(__dirname + '/../lib/analytics');
-
+ 
  const User = require(__dirname + '/../models/user');
  const Cart = require(__dirname + '/../models/cart');
 

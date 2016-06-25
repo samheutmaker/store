@@ -1,7 +1,6 @@
 const express = require('express');
-const stripe = require('stripe')('sk_test_cMSm7uHKKH0u2sIckUugISga');
+const stripe = require(__dirname + '/../lib/stripe');
 const jsonParser = require('body-parser').json();
-const mongoose = require('mongoose');
 const basicHTTP = require(__dirname + '/../lib/basic-http');
 const authCheck = require(__dirname + '/../lib/check-token');
 const a = require(__dirname + "/../lib/analytics");

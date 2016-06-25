@@ -1,0 +1,14 @@
+{
+	"name": "Make America Dank 5 Panel",
+	"SKU" : "1",
+	"desc": "Make a statement with this Dank hat that will undoubtably get you laid tonight."
+	"gender": "uni",
+	"cost" : "15",
+	"season": "all",
+	"type" : "hat",
+	"sizes": ["s", "m", "l"],
+	"tags" : ["donald", "trump", "hat", "presidenial campaign", "2016", "poltics", "satire"],
+	"imageUrls" : [],
+	"quantity" : 20
+
+}
