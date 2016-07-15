@@ -113,10 +113,14 @@ cartSchema.methods.populate = function() {
 						hash[el._id] = el;
 					});
 
-					var finalCart = this.items.map((el, i) => {
+					var finalCart = this.items
+					.map((el, i) => {
 						var newEl = el;
 						newEl.item = hash[newEl.item_id];
 						return newEl
+					})
+					.filter((el, i) => {
+						return !!el.item
 					});
 
 					(err) ? reject(err) : resolve(finalCart);
