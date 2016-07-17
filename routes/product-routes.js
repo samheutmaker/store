@@ -46,6 +46,9 @@ productRouter.get('/:id', jsonParser, (req, res) => {
 
 productRouter.post('/new', authCheck, jsonParser, (req, res) => {
   try {
+    
+    console.log(req.body.sizes);
+
     var newProduct = new Product();
     newProduct.name = req.body.name;
     newProduct.sizes = req.body.sizes;
